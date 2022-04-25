@@ -32,7 +32,7 @@ class InformationPokemon extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-        Text(value),
+        Text(value, style: const TextStyle(fontSize: 16),),
       ],
     );
   }

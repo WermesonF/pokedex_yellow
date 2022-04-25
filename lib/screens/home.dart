@@ -12,19 +12,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Pokemon> listPokemons = [];
-  List<Pokemon> listPokemonSearch = [];
-  Icon searchIcon = const Icon(Icons.search);
-  Widget appBarTitle = const Text("Pokedex Flutter");
-  final TextEditingController filter = TextEditingController();
-  String searchText = "";
-  String status = "Carregando pokedex...";
+  List<Pokemon> _listPokemons = [];
+  List<Pokemon> _listPokemonSearch = [];
+  Icon _searchIcon = const Icon(Icons.search);
+  Widget _appBarTitle = const Text("Pokedex Yellow");
+  final TextEditingController _filter = TextEditingController();
+  String _searchText = "";
+  String _status = "Carregando pokedex...";
 
   _HomePageState() {
-    filter.addListener(() {
-      if (filter.text.isEmpty) {
-        searchText = "";
-        listPokemons = listPokemonSearch;
+    _filter.addListener(() {
+      if (_filter.text.isEmpty) {
+        _searchText = "";
+        _listPokemons = _listPokemonSearch;
       } else {
         setState(() {
           setListPokemon();
@@ -44,13 +44,13 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.amber.shade200,
       appBar: AppBar(
-        title: appBarTitle,
+        title: _appBarTitle,
         centerTitle: true,
         actions: <Widget>[
-          IconButton(onPressed: searchPressed, icon: searchIcon)
+          IconButton(onPressed: searchPressed, icon: _searchIcon)
         ],
       ),
-      body: listPokemons.isEmpty
+      body: _listPokemons.isEmpty
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(
                     height: 8,
                   ),
-                  Text(status),
+                  Text(_status),
                 ],
               ),
             )
@@ -69,16 +69,16 @@ class _HomePageState extends State<HomePage> {
                   crossAxisCount: 2),
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
-              itemCount: listPokemons.length,
+              itemCount: _listPokemons.length,
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
-                  child: PokemonCard(pokemon: listPokemons[index]),
+                  child: PokemonCard(pokemon: _listPokemons[index]),
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => DetailsPokemon(
-                                  pokemon: listPokemons[index],
+                                  pokemon: _listPokemons[index],
                                 )));
                   },
                 );
@@ -89,47 +89,47 @@ class _HomePageState extends State<HomePage> {
 
   void searchPressed() {
     setState(() {
-      if (searchIcon.icon == Icons.search) {
-        searchIcon = const Icon(Icons.close);
-        appBarTitle = TextField(
-          controller: filter,
+      if (_searchIcon.icon == Icons.search) {
+        _searchIcon = const Icon(Icons.close);
+        _appBarTitle = TextField(
+          controller: _filter,
           decoration: const InputDecoration(
             hintText: "Pesquisar pokemon",
           ),
         );
       } else {
-        searchIcon = const Icon(Icons.search);
-        appBarTitle = const Text("Pokedex Flutter");
-        listPokemons = listPokemonSearch;
-        filter.clear();
+        _searchIcon = const Icon(Icons.search);
+        _appBarTitle = const Text("Pokedex Yellow");
+        _listPokemons = _listPokemonSearch;
+        _filter.clear();
       }
     });
   }
 
   void setListPokemon() {
-    searchText = filter.text;
+    _searchText = _filter.text;
     List<Pokemon> tempList = [];
 
-    for (int i = 0; i < listPokemonSearch.length; i++) {
-      if (listPokemonSearch[i]
+    for (int i = 0; i < _listPokemonSearch.length; i++) {
+      if (_listPokemonSearch[i]
           .name!
           .toLowerCase()
-          .contains(searchText.toLowerCase())) {
-        tempList.add(listPokemonSearch[i]);
+          .contains(_searchText.toLowerCase())) {
+        tempList.add(_listPokemonSearch[i]);
       }
     }
 
     if(tempList.isEmpty) {
-      status = "Pokemon não encontrato!";
+      _status = "Pokemon não encontrato!";
     }
 
-    listPokemons = tempList;
+    _listPokemons = tempList;
   }
 
   void fetchPokemonDate() async {
     PokemonRepository pokemonRepository = PokemonRepository();
-    listPokemons = await pokemonRepository.getAllPokemons();
-    listPokemonSearch = listPokemons;
+    _listPokemons = await pokemonRepository.getAllPokemons();
+    _listPokemonSearch = _listPokemons;
     setState(() => {});
   }
 }
