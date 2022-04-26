@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     if(tempList.isEmpty) {
-      _status = "Pokemon não encontrato!";
+      _status = "Pokemon não encontrado!";
     }
 
     _listPokemons = tempList;
